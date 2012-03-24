@@ -1,0 +1,40 @@
+elasticsearch.carrot2
+
+1.download lexical files,put them into the config folder.
+2.bin/plugin install medcl/
+
+```
+curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch_size=1800&carrot2.language=ENGLISH&carrot2.title_fields=title&carrot2.summary_fields=snippet&carrot2.url_field=url&carrot2.attach_detail=true
+-d'
+{
+    "query": {
+        "bool": {
+            "should": [
+                {
+                    "match_all": {}
+                }
+            ]
+        }
+    },
+    "from": 0,
+    "size": 10
+}
+'
+
+```
+
+Response sample:
+https://gist.github.com/2184894
+
+
+
+algorithm:
+STCClusteringAlgorithm
+BisectingKMeansClusteringAlgorithm
+ByFieldClusteringAlgorithm
+ByUrlClusteringAlgorithm
+LingoClusteringAlgorithm
+
+
+language:
+ARABIC,   BULGARIAN,   CZECH,   CHINESE_SIMPLIFIED,   DANISH,   DUTCH,   ENGLISH,   ESTONIAN,   FINNISH,   FRENCH,   GERMAN,   GREEK,   HUNGARIAN,   ITALIAN,   IRISH,   KOREAN,   LATVIAN,   LITHUANIAN,   MALTESE,   NORWEGIAN,   POLISH,   PORTUGUESE,   ROMANIAN,   RUSSIAN,   SLOVAK,   SLOVENE,   SPANISH,   SWEDISH,   THAI,   TURKISH;
