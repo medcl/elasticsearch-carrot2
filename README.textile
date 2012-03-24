@@ -1,9 +1,12 @@
 elasticsearch.carrot2
 
-1.download lexical files,put them into the config folder.
-2.bin/plugin install medcl/
+1.download lexical files(https://github.com/downloads/medcl/elasticsearch-carrot2/config.zip),put them into the config folder.
+2.bin/plugin install medcl/elasticsearch-carrot2/1.0
 
-```
+have fun.
+
+<pre>
+
 curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch_size=1800&carrot2.language=ENGLISH&carrot2.title_fields=title&carrot2.summary_fields=snippet&carrot2.url_field=url&carrot2.attach_detail=true
 -d'
 {
@@ -21,7 +24,7 @@ curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch
 }
 '
 
-```
+</pre>
 
 Response sample:
 https://gist.github.com/2184894
