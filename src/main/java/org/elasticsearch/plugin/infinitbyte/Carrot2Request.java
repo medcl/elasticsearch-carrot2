@@ -22,9 +22,12 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
     public String   UrlField;
     public String Language;
     public String Algorithm;
-    public int FetchSize=100;
+    public int FetchSize=20;
+    public int MaxDocPerCluster=10;
+    public int MaxClusters=10;
 
     public boolean AttachDetail =false;
+    public boolean AttachSourceHits =false;
 
 
 

@@ -28,12 +28,14 @@ import org.elasticsearch.rest.*;
 import org.elasticsearch.rest.action.support.RestActions;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,7 +120,19 @@ public class Carrot2RestAction extends BaseRestHandler {
 
                     for (SearchHit hit : response.getHits()) {
 
+
                         Map<String, Object> objectMap = hit.sourceAsMap();
+                        if(objectMap==null){
+                            if(hit.fields()!=null){
+                                 objectMap=new HashMap<String, Object> ();
+                                 for (SearchHitField filed : hit.fields().values()){
+                                     objectMap.put( filed.name(),filed.getValue());
+                                 }
+                            }
+
+                        }
+                        if(objectMap!=null){
+
                          String title ="";
                          String summary ="";
                          String url = null;
@@ -175,6 +189,8 @@ public class Carrot2RestAction extends BaseRestHandler {
                           doc.setField("_url",url);
                         }
                         documents.add(doc);
+
+                    }
                     }
 
                     final Map<String, Object> attributes = Maps.newHashMap();
@@ -213,7 +229,9 @@ public class Carrot2RestAction extends BaseRestHandler {
                 try {
                     XContentBuilder builder = restContentBuilder(request);
                     builder.startObject();
-                    response.toXContent(builder, request);
+                    //attach hits source
+                    if(req.AttachSourceHits)
+                    {response.toXContent(builder, request);}
 
                     if (processingResult != null && processingResult.getClusters() != null) {
                         final Collection<Cluster> clusters = processingResult.getClusters();
@@ -223,13 +241,27 @@ public class Carrot2RestAction extends BaseRestHandler {
                         if (clusters != null && clusters.size() > 0) {
                             builder.startArray("clusters");
                             //displayClusters
+
+                            //limit cluster
+                            int return_cluster=0;
                             for (final Cluster cluster : clusters) {
+
+                                if(return_cluster>req.MaxClusters){break;}
+                                return_cluster+=1;
+
                                 builder.startObject();
                                 List<Document> docs = cluster.getAllDocuments();
+                                int return_size=0;
                                 if (docs != null && docs.size() > 0) {
-
+                                    builder.field("size",docs.size());
+                                    builder.field("name",cluster.getLabel());
                                     builder.startArray("documents");
                                     for (Document document : docs) {
+
+                                        //do not return all of the docs
+                                        if(return_size>req.MaxDocPerCluster){break;}
+                                        return_size+=1;
+
                                         builder.startObject();
                                         builder.field("_index", document.getField("_index"));
                                         builder.field("_type", document.getField("_type"));
@@ -328,10 +360,23 @@ public class Carrot2RestAction extends BaseRestHandler {
         searchRequest.Language = request.param("carrot2.language");
         searchRequest.Algorithm = request.param("carrot2.algorithm");
         searchRequest.UrlField = request.param("carrot2.url_field");
-        if(request.param("carrot2.url_field")!=null)
+        if(request.param("carrot2.attach_detail")!=null)
         {
             searchRequest.AttachDetail = Boolean.parseBoolean(request.param("carrot2.attach_detail"));
         }
+        if(request.param("carrot2.attach_hits")!=null)
+        {
+            searchRequest.AttachSourceHits = Boolean.parseBoolean(request.param("carrot2.attach_hits"));
+        }
+        if(request.param("carrot2.max_doc_per_cluster")!=null)
+        {
+            searchRequest.MaxDocPerCluster = Integer.parseInt(request.param("carrot2.max_doc_per_cluster"));
+        }
+        if(request.param("carrot2.max_cluster_size")!=null)
+        {
+            searchRequest.MaxClusters = Integer.parseInt(request.param("carrot2.max_cluster_size"));
+        }
+
         param = request.param("carrot2.title_fields");
         if (param != null) {
             searchRequest.TitleFields = RestActions.splitTypes(param);

@@ -30,6 +30,10 @@ Response sample:
 https://gist.github.com/2184894
 
 
+carrot2.attach_hits=false
+carrot2.max_cluster_size=10
+carrot2.max_doc_per_cluster=10
+
 
 algorithm:
 STCClusteringAlgorithm
