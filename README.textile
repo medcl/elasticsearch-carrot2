@@ -41,8 +41,8 @@ carrot2.summary_fields                  [which filed in doc's source will be use
 carrot2.url_field                       [which filed in doc's source will be used as url for clustering]
 carrot2.attach_hits=false               [set false to decrease the size of response,will remove the original search hits]
 carrot2.attach_detail                   [set false to just return the id,title/summary/url will not included in response]
-carrot2.max_cluster_size=100            [the max num of the cluster will be returned]
-carrot2.max_doc_per_cluster=10          [the max num of the doc inside a cluster will be returned]
+carrot2.max_cluster_size=100            [the max num of clusters will be returned]
+carrot2.max_doc_per_cluster=10          [the max num of the docs within a cluster will be returned]
 carrot2.cluster_count_base=30           [http://download.carrot2.org/head/manual/index.html#section.attribute.LingoClusteringAlgorithm.desiredClusterCountBase]
 carrot2.cluster_phrase_label_boost=1.5  [http://download.carrot2.org/head/manual/index.html#section.attribute.LingoClusteringAlgorithm.phraseLabelBoost]
 </pre>
