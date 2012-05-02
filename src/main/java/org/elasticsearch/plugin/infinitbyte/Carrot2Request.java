@@ -24,11 +24,11 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
     public String Algorithm;
     public int FetchSize=20;
     public int MaxDocPerCluster=10;
-    public int MaxClusters=100;
+    public int MaxClusters=10;
 
     public boolean AttachDetail =false;
     public boolean AttachSourceHits =false;
-    public int DesiredClusterCountBase=30;
+    public int DesiredClusterCountBase=10;
     public double PhraseLabelBoost=1.5;
 
 
