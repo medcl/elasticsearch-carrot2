@@ -5,7 +5,7 @@ the demo page is here:
 http://s.medcl.net/?query=Search+API++Search+Type
 
 
-1.download lexical files(https://github.com/downloads/medcl/elasticsearch-carrot2/config.zip),put them into the config folder.
+1.download lexical files (https://github.com/downloads/medcl/elasticsearch-carrot2/config.zip) ,put them into the config folder.
 2.bin/plugin install medcl/elasticsearch-carrot2/1.0
 
 have fun.
@@ -34,6 +34,7 @@ curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch
 Response sample:
 https://gist.github.com/2184894
 
+<pre>
 carrot2.language=ENGLISH                [check appendix to view supported language]
 carrot2.title_fields                    [which filed in doc's source will be used as title for clustering]
 carrot2.summary_fields                  [which filed in doc's source will be used as summary for clustering]
@@ -44,6 +45,7 @@ carrot2.max_cluster_size=100            [the max num of the cluster will be retu
 carrot2.max_doc_per_cluster=10          [the max num of the doc inside a cluster will be returned]
 carrot2.cluster_count_base=30           [http://download.carrot2.org/head/manual/index.html#section.attribute.LingoClusteringAlgorithm.desiredClusterCountBase]
 carrot2.cluster_phrase_label_boost=1.5  [http://download.carrot2.org/head/manual/index.html#section.attribute.LingoClusteringAlgorithm.phraseLabelBoost]
+</pre>
 
 supported algorithm:
 LingoClusteringAlgorithm
