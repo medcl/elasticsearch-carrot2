@@ -24,11 +24,12 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
     public String Algorithm;
     public int FetchSize=20;
     public int MaxDocPerCluster=10;
-    public int MaxClusters=10;
+    public int MaxClusters=100;
 
     public boolean AttachDetail =false;
     public boolean AttachSourceHits =false;
-
+    public int DesiredClusterCountBase=30;
+    public double PhraseLabelBoost=1.5;
 
 
     public Carrot2Request(String[] indices) {
@@ -58,6 +59,8 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
         out.writeUTF(Algorithm);
         out.writeUTF(UrlField);
         out.writeInt(FetchSize);
+        out.writeInt(DesiredClusterCountBase);
+        out.writeDouble(PhraseLabelBoost);
 
     }
 
@@ -80,6 +83,8 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
         Algorithm=in.readUTF();
         UrlField=in.readUTF();
         FetchSize=in.readInt();
+        DesiredClusterCountBase=in.readInt();
+        PhraseLabelBoost=in.readDouble();
 
     }
 }

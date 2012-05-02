@@ -22,6 +22,7 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.rest.*;
@@ -52,10 +53,16 @@ import static org.elasticsearch.rest.action.support.RestXContentBuilder.restCont
 public class Carrot2RestAction extends BaseRestHandler {
 
     final Controller controller = ControllerFactory.createCachingPooling(IDocumentSource.class,LingoClusteringAlgorithm.class);
-
+    Environment environment;
     @Inject
     protected Carrot2RestAction(Settings settings, Client client, RestController restController) {
         super(settings, client);
+
+        environment=new Environment(settings);
+
+//        logger.debug(environment.configFile().getPath());
+//        logger.debug(environment.configFile().getAbsolutePath());
+
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_carrot2", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_carrot2/{algorithm}", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/_carrot2", this);
@@ -97,6 +104,7 @@ public class Carrot2RestAction extends BaseRestHandler {
             }
             return;
         }
+
         client.search(searchRequest, new ActionListener<SearchResponse>() {
             @Override
             public void onResponse(SearchResponse response) {
@@ -110,6 +118,8 @@ public class Carrot2RestAction extends BaseRestHandler {
                     if(req!=null){
                         if(logger.isDebugEnabled()){
                          logger.debug(String.valueOf(req.FetchSize));
+                         logger.debug(String.valueOf(req.DesiredClusterCountBase));
+                         logger.debug(String.valueOf(req.PhraseLabelBoost));
                          logger.debug(String.valueOf(req.Algorithm));
                          logger.debug(String.valueOf(req.Language));
                          logger.debug(java.util.Arrays.toString(req.TitleFields));
@@ -153,7 +163,7 @@ public class Carrot2RestAction extends BaseRestHandler {
                              for (String title_field : req.TitleFields){
                                  if(objectMap.containsKey(title_field))
                                  {
-                                     title = title + objectMap.get(title_field).toString();
+                                     title = title +" "+ objectMap.get(title_field).toString();
                                  }
                               }
                           }else {
@@ -164,7 +174,7 @@ public class Carrot2RestAction extends BaseRestHandler {
                              for (String summary_field : req.SummaryFields){
                                  if(objectMap.containsKey(summary_field))
                                  {
-                                     summary = summary + objectMap.get(summary_field).toString();
+                                     summary = summary +" "+ objectMap.get(summary_field).toString();
                                  }
                               }
                           }else {
@@ -196,14 +206,17 @@ public class Carrot2RestAction extends BaseRestHandler {
                     final Map<String, Object> attributes = Maps.newHashMap();
                     LingoClusteringAlgorithmDescriptor
                     .attributeBuilder(attributes)
-                    .desiredClusterCountBase(15)
+                    .desiredClusterCountBase(req.DesiredClusterCountBase)
                     .matrixReducer()
                     .factorizationQuality(IterationNumberGuesser.FactorizationQuality.HIGH);
+
+
 
                     MultilingualClusteringDescriptor.attributeBuilder(attributes)
                     .defaultLanguage(LanguageCode.ENGLISH);
 
-                    File resourcesDir = new File("../config/carrot2/resources");
+
+                    File resourcesDir = new File(environment.configFile(), "carrot2/resources");
 
                     ResourceLookup resourceLookup = new ResourceLookup(new DirLocator(resourcesDir));
 
@@ -215,6 +228,7 @@ public class Carrot2RestAction extends BaseRestHandler {
                     LingoClusteringAlgorithmDescriptor.AttributeBuilder builder = LingoClusteringAlgorithmDescriptor.attributeBuilder(attributes);
                     builder.matrixReducer().factorizationFactory(LocalNonnegativeMatrixFactorizationFactory.class);
                     builder.matrixBuilder().titleWordsBoost(7);
+                    builder.clusterBuilder().phraseLabelBoost(req.PhraseLabelBoost);
 
                     CommonAttributesDescriptor.attributeBuilder(attributes)
                             .documents(documents);
@@ -357,6 +371,13 @@ public class Carrot2RestAction extends BaseRestHandler {
         if (param != null) {
             searchRequest.FetchSize = Integer.parseInt(param);
         }
+
+        param = request.param("carrot2.cluster_count_base");
+        if (param != null) {
+            searchRequest.DesiredClusterCountBase = Integer.parseInt(param);
+        }
+
+
         searchRequest.Language = request.param("carrot2.language");
         searchRequest.Algorithm = request.param("carrot2.algorithm");
         searchRequest.UrlField = request.param("carrot2.url_field");

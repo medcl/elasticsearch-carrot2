@@ -12,7 +12,7 @@ have fun.
 
 <pre>
 
-curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch_size=1800&carrot2.language=ENGLISH&carrot2.title_fields=title&carrot2.summary_fields=snippet&carrot2.url_field=url&carrot2.attach_detail=true
+curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch_size=1800&carrot2.language=ENGLISH&carrot2.title_fields=title&carrot2.summary_fields=snippet&carrot2.url_field=url&carrot2.attach_detail=true&carrot2.cluster_count_base=10&carrot2.cluster_phrase_label_boost=2.0
 -d'
 {
     "query": {
@@ -25,7 +25,7 @@ curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch
         }
     },
     "from": 0,
-    "size": 10
+    "size": 500
 }
 '
 
@@ -34,18 +34,25 @@ curl -XPOST http://localhost:9200/elasticsearch_resources/_carrot2?carrot2.fetch
 Response sample:
 https://gist.github.com/2184894
 
+carrot2.language=ENGLISH                [check appendix to view supported language]
+carrot2.title_fields                    [which filed in doc's source will be used as title for clustering]
+carrot2.summary_fields                  [which filed in doc's source will be used as summary for clustering]
+carrot2.url_field                       [which filed in doc's source will be used as url for clustering]
+carrot2.attach_hits=false               [set false to decrease the size of response,will remove the original search hits]
+carrot2.attach_detail                   [set false to just return the id,title/summary/url will not included in response]
+carrot2.max_cluster_size=100            [the max num of the cluster will be returned]
+carrot2.max_doc_per_cluster=10          [the max num of the doc inside a cluster will be returned]
+carrot2.cluster_count_base=30           [http://download.carrot2.org/head/manual/index.html#section.attribute.LingoClusteringAlgorithm.desiredClusterCountBase]
+carrot2.cluster_phrase_label_boost=1.5  [http://download.carrot2.org/head/manual/index.html#section.attribute.LingoClusteringAlgorithm.phraseLabelBoost]
 
-carrot2.attach_hits=false
-carrot2.max_cluster_size=10
-carrot2.max_doc_per_cluster=10
+supported algorithm:
+LingoClusteringAlgorithm
 
-
-algorithm:
+TODO:
 STCClusteringAlgorithm
 BisectingKMeansClusteringAlgorithm
 ByFieldClusteringAlgorithm
 ByUrlClusteringAlgorithm
-LingoClusteringAlgorithm
 
 
 language:

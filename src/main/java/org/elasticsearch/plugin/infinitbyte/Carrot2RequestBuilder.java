@@ -34,7 +34,7 @@ public class Carrot2RequestBuilder extends BaseRequestBuilder<Carrot2Request,Car
     private Carrot2SourceBuilder sourceBuilder;
     public Carrot2RequestBuilder(Client client) {
           super(client, new Carrot2Request());
-          logger.info("carrot2requestbuilder construct");
+          logger.info("carrot2 request builder construct");
     }
 
     @Override
