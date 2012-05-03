@@ -66,9 +66,11 @@ public class Carrot2RestAction extends BaseRestHandler {
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_carrot2", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_carrot2/{algorithm}", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/_carrot2", this);
+        restController.registerHandler(RestRequest.Method.GET, "/{index}/_carrot2", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/_carrot2/{algorithm}", this);
         restController.registerHandler(RestRequest.Method.POST, "/_carrot2/{algorithm}", this);
         restController.registerHandler(RestRequest.Method.POST, "/_carrot2", this);
+        restController.registerHandler(RestRequest.Method.GET, "/_carrot2", this);
 
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_search_clustering", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_search_clustering/{algorithm}", this);
@@ -377,6 +379,10 @@ public class Carrot2RestAction extends BaseRestHandler {
             searchRequest.DesiredClusterCountBase = Integer.parseInt(param);
         }
 
+        param = request.param("cluster_phrase_label_boost");
+        if (param != null) {
+            searchRequest.PhraseLabelBoost = Double.parseDouble(param);
+        }
 
         searchRequest.Language = request.param("carrot2.language");
         searchRequest.Algorithm = request.param("carrot2.algorithm");
