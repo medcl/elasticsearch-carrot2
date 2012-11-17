@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>elasticsearch</groupId>
     <artifactId>elasticsearch-carrot2</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 
          <properties>
-        <elasticsearch.version>0.19.0</elasticsearch.version>
+        <elasticsearch.version>0.19.11</elasticsearch.version>
     </properties>
 
     <repositories>
@@ -31,7 +31,7 @@
         <dependency>
   <groupId>org.carrot2</groupId>
   <artifactId>carrot2-core</artifactId>
-  <version>3.6.0-SNAPSHOT</version>
+  <version>3.6.0</version>
 </dependency>
     </dependencies>
 
@@ -54,6 +54,25 @@
                         </configuration>
                        <goals>
                            <goal>run</goal>
+                       </goals>
+                   </execution>
+               </executions>
+           </plugin>
+           <plugin>
+               <artifactId>maven-assembly-plugin</artifactId>
+               <version>2.3</version>
+               <configuration>
+                   <appendAssemblyId>false</appendAssemblyId>
+                   <outputDirectory>${project.build.directory}/releases/</outputDirectory>
+                   <descriptors>
+                       <descriptor>${basedir}/src/assemblies/plugin.xml</descriptor>
+                   </descriptors>
+               </configuration>
+               <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals>
+                           <goal>single</goal>
                        </goals>
                    </execution>
                </executions>

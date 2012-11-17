@@ -19,6 +19,7 @@ import org.elasticsearch.action.search.SearchOperationThreading;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.Strings;
+import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -346,7 +347,8 @@ public class Carrot2RestAction extends BaseRestHandler {
         Carrot2Request searchRequest = new Carrot2Request(indices);
         // get the content, and put it in the body
         if (request.hasContent()) {
-            searchRequest.source(request.contentByteArray(), request.contentByteArrayOffset(), request.contentLength(), request.contentUnsafe());
+            BytesReference content = request.content();
+            searchRequest.source(content.array(), content.arrayOffset(), content.length(), request.contentUnsafe());
         } else {
             String source = request.param("source");
             if (source != null) {
