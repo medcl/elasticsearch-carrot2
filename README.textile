@@ -6,7 +6,10 @@ http://s.medcl.net/?query=Search+API++Search+Type
 
 
 1.download lexical files (https://github.com/downloads/medcl/elasticsearch-carrot2/config.zip) ,put them into the config folder.
-2.bin/plugin install medcl/elasticsearch-carrot2/1.1.1
+<del>2.bin/plugin install medcl/elasticsearch-carrot2/1.1.1</del>
+
+2.you download this plugin from RTF project(https://github.com/medcl/elasticsearch-rtf)
+https://github.com/medcl/elasticsearch-rtf/tree/master/elasticsearch/plugins/tools.carrot2
 
 have fun.
 
