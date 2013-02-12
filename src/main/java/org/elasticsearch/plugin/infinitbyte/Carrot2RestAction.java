@@ -58,11 +58,7 @@ public class Carrot2RestAction extends BaseRestHandler {
     @Inject
     protected Carrot2RestAction(Settings settings, Client client, RestController restController) {
         super(settings, client);
-
         environment=new Environment(settings);
-
-//        logger.debug(environment.configFile().getPath());
-//        logger.debug(environment.configFile().getAbsolutePath());
 
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_carrot2", this);
         restController.registerHandler(RestRequest.Method.POST, "/{index}/{type}/_carrot2/{algorithm}", this);
@@ -132,8 +128,6 @@ public class Carrot2RestAction extends BaseRestHandler {
                     }
 
                     for (SearchHit hit : response.getHits()) {
-
-
                         Map<String, Object> objectMap = hit.sourceAsMap();
                         if(objectMap==null){
                             if(hit.fields()!=null){

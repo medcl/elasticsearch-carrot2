@@ -2,11 +2,13 @@ package org.elasticsearch.plugin.infinitbyte;
 
 import org.elasticsearch.ElasticSearchIllegalArgumentException;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.ActionRequestBuilder;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.search.SearchOperationThreading;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.action.support.BaseRequestBuilder;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.internal.InternalClient;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
@@ -29,28 +31,25 @@ import java.util.Map;
  * Date: 3/20/12
  * Time: 2:05 PM
  */
-public class Carrot2RequestBuilder extends BaseRequestBuilder<Carrot2Request,Carrot2Response> {
+public class Carrot2RequestBuilder extends ActionRequestBuilder<Carrot2Request,Carrot2Response,Carrot2RequestBuilder> {
     protected final ESLogger logger= Loggers.getLogger(getClass());
     private Carrot2SourceBuilder sourceBuilder;
     public Carrot2RequestBuilder(Client client) {
-          super(client, new Carrot2Request());
-          logger.info("carrot2 request builder construct");
+          super((InternalClient) client, new Carrot2Request());
     }
 
     @Override
     public ListenableActionFuture<Carrot2Response> execute() {
-         logger.info("carrot2 request builder execute1");
         return super.execute();
     }
 
     @Override
     public void execute(ActionListener<Carrot2Response> carrot2ResponseActionListener) {
-         logger.info("carrot2 request builder  execute2");
         super.execute(carrot2ResponseActionListener);
     }
 
-    
-    
+
+
 
     /**
      * Sets the indices the search will be executed on.
@@ -175,14 +174,6 @@ public class Carrot2RequestBuilder extends BaseRequestBuilder<Carrot2Request,Car
      */
     public Carrot2RequestBuilder setOperationThreading(String operationThreading) {
         request.operationThreading(operationThreading);
-        return this;
-    }
-
-    /**
-     * Should the listener be called on a separate thread if needed.
-     */
-    public Carrot2RequestBuilder setListenerThreaded(boolean listenerThreaded) {
-        request.listenerThreaded(listenerThreaded);
         return this;
     }
 
@@ -733,8 +724,24 @@ public class Carrot2RequestBuilder extends BaseRequestBuilder<Carrot2Request,Car
            if (sourceBuilder != null) {
             request.source( sourceBuilder());
         }
-       //TODO client.execute(request, listener);
-        client.search(request);
+         doInnerExecute(new ActionListener<SearchResponse>() {
+            @Override
+            public void onResponse(SearchResponse searchResponse) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+
+            }
+        });
+    }
+
+    protected void doInnerExecute(ActionListener<SearchResponse> listener) {
+        if (sourceBuilder != null) {
+            request.source( sourceBuilder());
+        }
+        ((Client) client).search(request, listener);
     }
 
     private Carrot2SourceBuilder sourceBuilder() {

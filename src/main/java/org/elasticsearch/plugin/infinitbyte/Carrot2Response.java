@@ -1,13 +1,12 @@
 package org.elasticsearch.plugin.infinitbyte;
 
-import org.elasticsearch.action.ActionResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentBuilderString;
 import org.elasticsearch.common.xcontent.XContentFactory;
@@ -27,7 +26,7 @@ import static org.elasticsearch.search.internal.InternalSearchResponse.readInter
  * Date: 3/20/12
  * Time: 1:58 PM
  */
-public class Carrot2Response implements ActionResponse,ToXContent {
+public class Carrot2Response extends SearchResponse {
 
    protected final ESLogger logger= Loggers.getLogger(getClass());
     public Carrot2Response(InternalSearchResponse internalResponse, String scrollId, int totalShards, int successfulShards, long tookInMillis, ShardSearchFailure[] shardFailures) {
