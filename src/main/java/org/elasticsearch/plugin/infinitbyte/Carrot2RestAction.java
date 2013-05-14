@@ -361,7 +361,7 @@ public class Carrot2RestAction extends BaseRestHandler {
         }
 
         searchRequest.types(RestActions.splitTypes(request.param("type")));
-        searchRequest.queryHint(request.param("query_hint"));
+//        searchRequest.queryHint(request.param("query_hint"));
         searchRequest.routing(request.param("routing"));
         searchRequest.preference(request.param("preference"));
 

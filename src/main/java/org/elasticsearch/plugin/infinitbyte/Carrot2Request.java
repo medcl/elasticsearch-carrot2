@@ -47,17 +47,17 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
         super.writeTo(out);
         out.writeVInt(TitleFields.length);
         for (String title : TitleFields) {
-            out.writeUTF(title);
+            out.writeString(title);
         }
 
         out.writeVInt(SummaryFields.length);
         for (String summary : SummaryFields) {
-            out.writeUTF(summary);
+            out.writeString(summary);
         }
 
-        out.writeUTF(Language);
-        out.writeUTF(Algorithm);
-        out.writeUTF(UrlField);
+        out.writeString(Language);
+        out.writeString(Algorithm);
+        out.writeString(UrlField);
         out.writeInt(FetchSize);
         out.writeInt(DesiredClusterCountBase);
         out.writeDouble(PhraseLabelBoost);
@@ -71,17 +71,17 @@ protected final ESLogger logger= Loggers.getLogger(getClass());
 
         TitleFields = new String[in.readVInt()];
         for (int i = 0; i < TitleFields.length; i++) {
-            TitleFields[i] = in.readUTF();
+            TitleFields[i] = in.readString();
         }
 
         SummaryFields = new String[in.readVInt()];
         for (int i = 0; i < SummaryFields.length; i++) {
-            SummaryFields[i] = in.readUTF();
+            SummaryFields[i] = in.readString();
         }
 
-        Language=in.readUTF();
-        Algorithm=in.readUTF();
-        UrlField=in.readUTF();
+        Language=in.readString();
+        Algorithm=in.readString();
+        UrlField=in.readString();
         FetchSize=in.readInt();
         DesiredClusterCountBase=in.readInt();
         PhraseLabelBoost=in.readDouble();

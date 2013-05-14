@@ -273,7 +273,7 @@ public class Carrot2Response extends SearchResponse {
             }
         }
         if (in.readBoolean()) {
-            scrollId = in.readUTF();
+            scrollId = in.readString();
         }
         tookInMillis = in.readVLong();
     }
@@ -293,7 +293,7 @@ public class Carrot2Response extends SearchResponse {
             out.writeBoolean(false);
         } else {
             out.writeBoolean(true);
-            out.writeUTF(scrollId);
+            out.writeString(scrollId);
         }
         out.writeVLong(tookInMillis);
     }

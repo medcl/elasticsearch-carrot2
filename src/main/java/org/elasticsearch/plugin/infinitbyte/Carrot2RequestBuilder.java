@@ -18,7 +18,7 @@ import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.facet.AbstractFacetBuilder;
+import org.elasticsearch.search.facet.FacetBuilder;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -123,14 +123,6 @@ public class Carrot2RequestBuilder extends ActionRequestBuilder<Carrot2Request,C
      */
     public Carrot2RequestBuilder setTimeout(String timeout) {
         sourceBuilder().timeout(timeout);
-        return this;
-    }
-
-    /**
-     * A query hint to optionally later be used when routing the request.
-     */
-    public Carrot2RequestBuilder setQueryHint(String queryHint) {
-        request.queryHint(queryHint);
         return this;
     }
 
@@ -466,7 +458,7 @@ public class Carrot2RequestBuilder extends ActionRequestBuilder<Carrot2Request,C
     /**
      * Adds a facet to the search operation.
      */
-    public Carrot2RequestBuilder addFacet(AbstractFacetBuilder facet) {
+    public Carrot2RequestBuilder addFacet(FacetBuilder facet) {
         sourceBuilder().facet(facet);
         return this;
     }
