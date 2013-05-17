@@ -1,6 +1,17 @@
 
 elasticsearch.carrot2
 
+a elasticsearch plugin integrated with carrot2,which clustering your search results into topics, 
+
+
+License Apache2
+
+Version
+-------------
+ master                      | 0.90.0 -> master
+ 1.2.0                       | 0.90.0
+ 1.1.1                       | 0.20.2
+
 the demo page is here:
 http://s.medcl.net/?query=Search+API++Search+Type
 

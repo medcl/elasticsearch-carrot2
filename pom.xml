@@ -7,9 +7,9 @@
     <artifactId>elasticsearch-tools-carrot2</artifactId>
     <version>1.2.0</version>
 
-         <properties>
-        <elasticsearch.version>0.90.0</elasticsearch.version>
-    </properties>
+        <properties>
+            <elasticsearch.version>0.90.0</elasticsearch.version>
+        </properties>
 
     <repositories>
         <repository>
