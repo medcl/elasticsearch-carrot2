@@ -16,6 +16,11 @@ the demo page is here:
 http://s.medcl.net/?query=Search+API++Search+Type
 
 
+a detailed tutorial is here:
+http://log.medcl.net/item/2013/06/tutorial-clustering-search-result-with-plugin-tools-carrot2/
+
+
+
 1.download lexical files (https://github.com/downloads/medcl/elasticsearch-carrot2/config.zip) ,put them into the config folder.
 <del>2.bin/plugin install medcl/elasticsearch-carrot2/1.1.1</del>
 
